@@ -1,11 +1,13 @@
 # BUILD_REF is the alpine image where we'll install build tools and
-BUILD_REF	?= library/alpine:3.10
+BUILD_REF	?= library/alpine:3.13
 
 # MODULE_REF is the output image that will contain module binary
-MODULE_REF	?= kernel-module
+MODULE_REF	?= clipboard
 
 # KERNEL_REF is the image containing kernel sources for the Docker VM
-KERNEL_REF	?= $(shell ruby -ryaml -rjson -e 'puts YAML.load_file("linuxkit.yml").to_json' | jq -r '.kernel.image | @sh')
+KERNEL_REF	?= $(shell cat linuxkit.yml  | grep image | head -n 1 | cut -f 3 -w) #'{print $2}')
+#docker/for-desktop-kernel:5.15.49-13422a825f833d125942948cf8a8688cef721ead 
+#$(shell ruby -ryaml -rjson -e 'puts YAML.load_file("linuxkit.yml").to_json' | jq -r '.kernel.image | @sh')
 
 help:
 	@echo To build your module, write a Makefile in the \'module\' directory

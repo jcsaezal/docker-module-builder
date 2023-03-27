@@ -11,15 +11,6 @@ RUN tar xf kernel-dev.tar -C /
 RUN tar xf kernel.tar -C /
 
 # install dependencies
-RUN apk add -U build-base git curl perl
+RUN apk add -U build-base git curl perl bash
 
-# copy module sources
-WORKDIR /usr/src
-COPY module module
-#RUN make -C module
-WORKDIR /usr/src/module
-RUN make
-
-# copy output
-FROM scratch
-COPY --from=build /usr/src/module/*.ko .
+CMD /bin/bash

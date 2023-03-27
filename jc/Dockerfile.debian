@@ -1,0 +1,15 @@
+ARG KERNEL_REF
+
+FROM ${KERNEL_REF} as kernel-source
+FROM debian:11.6 as build
+
+# unpack kernel sources
+WORKDIR /usr/src/linuxkit
+COPY --from=kernel-source / .
+RUN tar xf kernel-dev.tar -C /
+RUN tar xf kernel.tar -C /
+
+# install dependencies
+RUN apt update  && apt install -y git build-essential curl perl 
+
+CMD /bin/bash
